@@ -18,11 +18,6 @@ let UserSchema = new Schema(
         required : [true,'Email field is required'],
         unique: true
         },
-    username:{
-        type: String,
-        required : [true,'User Name field is required'],
-        unique: true
-        },
     password:{
         type: String,
         required : [true,'Password field is required'],
@@ -30,13 +25,9 @@ let UserSchema = new Schema(
         },
     role:{
         type: String,
-        required : [true,'User Name field is required'],
+        required : [true,'Role is required'],
         enum : UserRole,
         default: UserRole.CUSTOMER,
-        },
-    profile_image:{
-        type: String,
-        required : false,
         },
     phone_number:{
         type: String,
@@ -67,13 +58,6 @@ UserSchema.pre('save',function (next){
     }
 })
 
-//For comparing entered password with database during login
-// UserSchema.methods.comparePassword = function(candidatePassword,callBack){
-//     bcrypt.compare(candidatePassword, this.password, (err,isMatch)=>
-//         {if(err) return callBack(err)
-//         callBack(null,isMatch)}
-//     )
-// }
 UserSchema.methods.comparePassword = function(candidatePassword, callback){
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) =>{
         if(err) return callback(err)
@@ -82,7 +66,6 @@ UserSchema.methods.comparePassword = function(candidatePassword, callback){
 }
 
 
-//For generating token when logged in
 UserSchema.methods.generateToken = function(callBack){
     var user = this
     var token = jwt.sign(user._id.toHexString(),process.env.SECRETE)
@@ -92,14 +75,21 @@ UserSchema.methods.generateToken = function(callBack){
 
 //Validating token for auth routes middleware
 UserSchema.statics.findByToken = function(token,callBack){
-    //This decode must give user_id if token is valid .ie decode=user_id
-    User.findById(decode,function(err,user){
-        if(err){
-            res.json({status:false,data:'Invalid User ID'})
-        }
-        callBack(null,user)
+    jwt.verify(token, process.env.SECRETE,function(_err,decode){
+User.findById(decode,function(err,user){
+    if(err){
+        res.json({status:false,data:'Invalid User ID'})
+        // return  res.status(404).json({
+        //     success :true,
+        //     message:"Invalid User ID",
+        //     data:err
+        // })
+    }
+    callBack(null,user)
+})
     })
+    
 }
 
 const User = mongoose.model('User',UserSchema)
-module.exports = {User}
+module.exports = { User }

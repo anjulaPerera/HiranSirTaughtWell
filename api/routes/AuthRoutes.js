@@ -1,7 +1,8 @@
 module.exports = function(app){
-    // const {auth} = require('')
+const {Auth} = require('../middlewares/auth')
+const AuthController = require('../controllers/AuthController')
 
-    const AuthController = require('../controllers/AuthController')
     app.post('/register',AuthController.registerUser)
     app.post('/login',AuthController.loginUser)
+    app.get('/userdetails',Auth,AuthController.getUserDetails)
 }

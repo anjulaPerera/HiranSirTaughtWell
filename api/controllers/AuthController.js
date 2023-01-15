@@ -28,20 +28,42 @@ exports.loginUser = (req,res) => {
                 success:false,
                 message:"User email not found",
             })
-        }else {user.comparePassword(req.body.password,(_err,isMatch)=>{
+        }else 
+        {user.comparePassword(req.body.password,(_err,isMatch)=>{
             if(!isMatch){
                 return res.status(400).json({
                     success:false,
                     message:"Password is incorrect",
                 })
             }
-            return res.status(200).json({
-                success:true,
-                message:"Login successful",
+            user.generateToken((err,token)=>{
+                    if(err) {
+                        return res.status(400).json({
+                            success:false,
+                            message:"Unable to generate jwt key",
+                            data:err
+                        })
+                    }
+                    return res.status(200).json({
+                        success:true,
+                        message:"Login successful",
+                        data:{
+                            "token":token
+                        }
+                    })
             })
+            
 
         })}
 
         
+    })
+}
+
+exports.getUserDetails = (req,res)=>{
+    return  res.status(200).json({
+        success :true,
+        message:"User received",
+        data:req.user
     })
 }
