@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 let ServiceTagModelSchema
  = new Schema(
     {
@@ -11,7 +11,7 @@ let ServiceTagModelSchema
     required : [true,'Tag field is required']
         },
     created_date :{
-        type: DataTransfer,
+        type: Date,
         default: Date.now
         }
     }

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 let BeauticianModelSchema
  = new Schema(
     {
@@ -16,7 +16,7 @@ let BeauticianModelSchema
         required:false
         },
     created_date :{
-        type: DataTransfer,
+        type: Date,
         default: Date.now
         }
     }

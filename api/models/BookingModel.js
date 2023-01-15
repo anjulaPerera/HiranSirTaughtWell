@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 let BookingModelSchema
  = new Schema(
     {
@@ -22,7 +22,7 @@ let BookingModelSchema
     required : [true,'Status field is required']
         },
     created_date :{
-    type: DataTransfer,
+    type: Date,
     default: Date.now
         }
     }

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 let CustomerModelSchema
  = new Schema(
     {
@@ -12,7 +12,7 @@ let CustomerModelSchema
     required : [true,'User field is required']
         },
     created_date :{
-        type: DataTransfer,
+        type: Date,
         default: Date.now
         }
     }

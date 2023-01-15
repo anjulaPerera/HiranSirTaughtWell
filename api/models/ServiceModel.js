@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 const {ServiceTag} = require('./ServiceTagModel')
 
 
@@ -41,7 +41,7 @@ let ServiceModelSchema
                 },
 
             created_date :{
-                type: DataTransfer,
+                type: Date,
                 default: Date.now
                 }
     }

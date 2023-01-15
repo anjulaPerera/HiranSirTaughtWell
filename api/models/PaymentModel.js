@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-let {Schema} = mongoose.Schema
+let Schema = mongoose.Schema
 let PaymentModelSchema
  = new Schema(
     {
@@ -21,7 +21,7 @@ let PaymentModelSchema
     required : [true,'Status field is required']
         },
     created_date :{
-    type: DataTransfer,
+    type: Date,
     default: Date.now
         }
     }
