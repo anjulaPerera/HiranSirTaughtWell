@@ -3,6 +3,8 @@ let bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const UserRole = require('../enums/UserRole')
 require('dotenv').config()
+const VehicleType = require('../enums/VehicleType')
+const Exit = require('../enums/Exit')
 
 const SALT = 10
 let Schema = mongoose.Schema
@@ -32,6 +34,16 @@ let UserSchema = new Schema(
     phone_number:{
         type: String,
         required : false,
+        },
+    insurance_no:{
+        type: String,
+        ref:'User',
+        required : [true,'Insurance number is required']
+        },
+    vehicle_type:{
+        type : String,
+        enum: [VehicleType], 
+        required : [true,'Vehicle type is required']
         },
     created_date :{
         type: Date,
