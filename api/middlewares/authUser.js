@@ -1,7 +1,7 @@
 const {User} = require('../models/UserModel')
 
 
-const Auth = (req,res,next)=> {
+const AuthUser = (req,res,next)=> {
     let token = req.header('x-access-token')|| req.header("authorization")
     
     if(token){
@@ -34,4 +34,4 @@ const Auth = (req,res,next)=> {
 }
 
 
-module.exports = {Auth}
+module.exports = {AuthUser}

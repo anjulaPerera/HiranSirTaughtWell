@@ -1,8 +1,23 @@
 module.exports = function(app){
-const {Auth} = require('../middlewares/auth')
+const { AuthShedOwner } = require('../middlewares/authShedOwner')
+const {AuthUser} = require('../middlewares/authUser')
 const AuthController = require('../controllers/AuthController')
 
-    app.post('/register',AuthController.registerUser)
-    app.post('/login',AuthController.loginUser)
-    app.get('/userdetails',Auth,AuthController.getUserDetails)
+    //OKAY
+    app.post('/registeruser',AuthController.registerUser)
+
+    //OKAY
+    app.post('/loginuser',AuthController.loginUser)
+
+    //OKAY
+    app.post('/registershedowner',AuthController.registerShedOwner)
+
+    //OKAY
+    app.post('/loginshedowner',AuthController.loginShedOwner)
+
+    //OKAY
+    app.get('/userdetails',AuthUser,AuthController.getUserDetails)
+
+    //OKAY BUT TOKEN NOT RETURNING
+    app.get('/shedownerdetails',AuthShedOwner,AuthController.getShedOwnerDetails)
 }

@@ -4,16 +4,21 @@ const jwt = require('jsonwebtoken')
 const UserRole = require('../enums/UserRole')
 require('dotenv').config()
 const VehicleType = require('../enums/VehicleType')
-const Exit = require('../enums/Exit')
+
 
 const SALT = 10
 let Schema = mongoose.Schema
 let UserSchema = new Schema(
     {
+    user_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        // required : [true,'Insurance number is required']
+        },
     name:{
-    type: String,
-    required : [true,'Name field is required'],
-    maxlength : 100,
+        type: String,
+        required : [true,'Name field is required'],
+        maxlength : 100,
         },
     email:{
         type: String,
@@ -27,19 +32,14 @@ let UserSchema = new Schema(
         },
     role:{
         type: String,
-        required : [true,'Role is required'],
-        enum : UserRole,
+        // required : [true,'Role is required'],
         default: UserRole.CUSTOMER,
         },
     phone_number:{
         type: String,
         required : false,
         },
-    insurance_no:{
-        type: String,
-        ref:'User',
-        required : [true,'Insurance number is required']
-        },
+    
     vehicle_type:{
         type : String,
         enum: [VehicleType], 

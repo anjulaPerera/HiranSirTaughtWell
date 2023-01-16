@@ -1,15 +1,14 @@
 const { FuelQueue } = require("../models/FuelQueueModel");
 const { FuelStation } = require("../models/FuelStationModel");
-
-
+const mongoose = require("mongoose")
 
 exports.addUsertoQueue = (req, res) => {
-    const insurance_no = req.body.insurance_no;
+    const user_id = req.body.user_id;
     const shed_id = req.body.shed_id;
     const arrivalTime = new Date();
 
     const fuelQueue = new FuelQueue({
-        insurance_no: insurance_no,
+        user_id: user_id,
         shed_id: shed_id,
         arrivalTime: arrivalTime
     });
@@ -40,6 +39,56 @@ exports.addUsertoQueue = (req, res) => {
         }
     });
 };
+
+exports.removeUserfromQueue = (req, res) => {
+    const user_id = req.body.user_id;
+    const shed_id = req.body.shed_id;
+
+    FuelQueue.findOneAndDelete({ user_id: user_id, shed_id: shed_id }, (err, doc) => {
+        if (err) {
+            return res.status(422).json({
+                success: false,
+                message: "Error while removing user from queue",
+                data: err
+            });
+        } else {
+            FuelQueue.countDocuments({shed_id:shed_id},(err, count) => {
+                if (err) {
+                    return res.status(422).json({
+                        success: false,
+                        message: "Error while counting queue length",
+                        data: err
+                    });
+                } else {
+                    if(count > 0){
+                        FuelQueue.updateMany({shed_id:shed_id}, { $inc: { current_queueLen: -1 } },(err, doc) => {
+                            if (err) {
+                                return res.status(422).json({
+                                    success: false,
+                                    message: "Error while updating queue length",
+                                    data: err
+                                });
+                            } else {
+                                return res.status(200).json({
+                                    success: true,
+                                    message: "Successfully removed user from queue",
+                                    data: doc
+                                });
+                            }
+                        });
+                    } else {
+                        return res.status(200).json({
+                            success: true,
+                            message: "Successfully removed user from queue",
+                            data: doc
+                        });
+                    }
+                }
+            });
+        }
+    });
+};
+
 
 exports.getAverageWaitingTime = (req, res) => {
     const shed_id = req.params.shed_id;
@@ -76,13 +125,13 @@ exports.getAverageWaitingTime = (req, res) => {
 };
 
 exports.updateQueueTimes = (req, res) => {
-    const insurance_no = req.body.insurance_no;
+    const user_id = req.body.user_id;
     const shed_id = req.body.shed_id;
     const arrivalTime = req.body.arrivalTime;
     const departTime = req.body.departTime;
 
     FuelQueue.findOneAndUpdate(
-        { insurance_no: insurance_no, shed_id: shed_id },
+        { user_id: user_id, shed_id: shed_id },
         { arrivalTime: arrivalTime, departTime: departTime },
         (err, doc) => {
             if (err) {

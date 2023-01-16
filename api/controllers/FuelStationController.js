@@ -1,4 +1,5 @@
 const { FuelStation } = require("../models/FuelStationModel");
+const mongoose = require('mongoose')
 
 //OK
 exports.addFuelStation = (req, res) => {
@@ -163,11 +164,13 @@ exports.getFuelStatus = (req, res) => {
     });
 };
 
-exports.updateFuelStatus = (req, res) => {
-    const shed_id = req.params.stationId;
-    const newFuelStatus = req.body.fuelStatus;
+// 
 
-    FuelStation.findOneAndUpdate({_id: shed_id}, { fuelstatus: newFuelStatus }, (err, doc) => {
+exports.addFuelStatusToFuelStation = (req, res) => {
+    const shed_id = req.body.shed_id;
+    const fuelStatus = req.body.fuelStatus;
+
+    FuelStation.findByIdAndUpdate(shed_id, { fuelStatus }, { new: true }, (err, updatedFuelStation) => {
         if (err) {
             return res.status(422).json({
                 success: false,
@@ -178,11 +181,39 @@ exports.updateFuelStatus = (req, res) => {
             return res.status(200).json({
                 success: true,
                 message: "Successfully updated fuel status",
-                data: doc
+                data: updatedFuelStation
             });
         }
     });
-};
+}
 
 
+
+
+
+
+
+
+
+
+// exports.updateFuelStatus = (req, res) => {
+    //     const shed_id = req.params.shed_id;
+    //     const newFuelStatus = req.body.fuelStatus;
+    
+    //     FuelStation.findOneAndUpdate({_id: shed_id}, { fuelstatus: newFuelStatus }, (err, doc) => {
+    //         if (err) {
+    //             return res.status(422).json({
+    //                 success: false,
+    //                 message: "Error while updating fuel status",
+    //                 data: err
+    //             });
+    //         } else {
+    //             return res.status(200).json({
+    //                 success: true,
+    //                 message: "Successfully updated fuel status",
+    //                 data: doc
+    //             });
+    //         }
+    //     });
+    // };
 

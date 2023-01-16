@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const Enter = require('../enums/Enter')
+const Exit = require('../enums/Exit')
+
 
 
 
@@ -8,39 +11,35 @@ let FuelQueueModelSchema
  = new Schema(
     {
     shed_id:{
-            type: mongoose.Types.ObjectId, //should be able to get id from FuelStationModel
+            type: mongoose.Schema.Types.ObjectId, //should be able to get id from FuelStationModel
             required : [true,'Enter ShedID']
                 },
-    insurance_no:{
-            type: String, //should be able to get id from FuelStationModel
-            required:[true,'Insurance']
+    user_id:{
+            type: mongoose.Schema.Types.ObjectId, //should be able to get id from FuelStationModel
+            required:[true,'User Id']
             },
-            customerarrival_time:{
-                type: Date,
-                required:[true,"Customer arrival time is reuired"],
-                //what should be added to get the arrival time of customer, customer should be able to update this
-                },
     arrivalTime:{
         type:Date,
-        required:true
+        required:[true,'Enter Arrival time']
     },
     departTime:{
         type:Date,
-        required:true
+        required:[true,'Enter Depart time']
     },
     enter:{
         type:Boolean,
-        default : false
+        enum : Enter
+
     },
     exit:{
                 type : String,
                 enum: Exit, 
-                required : [true,'Did you pumped fuel before exitting?'],
+                // required : [true,'Did you pumped fuel before exitting?'],
                 date : Date.now //example
                 },
     current_queueLen: {
                 type: Number,
-                default:0,
+                default:1,
                 required: [true, 'Please enter length of current queue']
                 },
     created_date :{

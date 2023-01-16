@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
-
-
-
+const VehicleType = require('../enums/VehicleType')
 
 let Schema = mongoose.Schema
 let FuelStationModelSchema
@@ -12,7 +10,7 @@ let FuelStationModelSchema
                 required: [true, 'Name field is required']
             },
             shed_id: {
-                type: mongoose.Types.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'shed_id',
                 // required: [true, 'Owner field is required']
             },
@@ -31,7 +29,8 @@ let FuelStationModelSchema
                 type: Date
             },
             fuelType: {
-                type: String
+                type: String,
+                enum : VehicleType
             },
             fuelStatus:{
                 type : String
